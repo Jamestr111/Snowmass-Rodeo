@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snowmass Rodeo — Every Wednesday, June 17–Aug 19, 2026</title>
+<meta name="description" content="The Snowmass Rodeo runs every Wednesday night, June 17 through August 19, 2026. BBQ at 5pm, rodeo at 7pm, rain or shine. 52nd season in Snowmass Village, Colorado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Archivo+Black&family=Rye&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   Snowmass Rodeo — design tokens
+   Palette grounded in a Wednesday evening at the arena: dusk sky settling
+   over the Elk Range, dust in the ring, floodlights kicking on at 7.
+   ========================================================================== */
+:root{
+  --dusk:      #16233A;   /* mountain sky at rodeo time */
+  --dusk-2:    #223655;   /* lighter dusk, gradients */
+  --dust:      #E7D9B6;   /* arena dirt / bone */
+  --dust-soft: #F1E8D2;   /* lightest panels */
+  --iron:      #241D16;   /* weathered chute wood, body text */
+  --gold:      #E2A639;   /* floodlight gold, primary CTA */
+  --gold-dark: #B87F1F;
+  --sage:      #6E7B58;   /* range sage, tertiary accent */
+  --white:     #FFFBF3;
+
+  --font-display: "Rye", serif;
+  --font-head: "Archivo Black", "Archivo", sans-serif;
+  --font-body: "Archivo", sans-serif;
+
+  --container: 1180px;
+  --radius: 3px;
+  --shadow: 0 12px 30px -12px rgba(22,35,58,0.35);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  font-family: var(--font-body);
+  color: var(--iron);
+  background: var(--dust-soft);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+ul{ margin:0; padding:0; list-style:none; }
+h1,h2,h3,h4{ margin:0 0 .5em; line-height:1.1; font-family:var(--font-head); letter-spacing:.01em; }
+p{ margin:0 0 1em; }
+.container{ max-width:var(--container); margin:0 auto; padding:0 24px; }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* focus visibility ------------------------------------------------------ */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Eyebrow / labels
+   ========================================================================== */
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+  font-family: var(--font-head);
+  font-size:.72rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color: var(--gold-dark);
+}
+.eyebrow::before{
+  content:"";
+  width:22px; height:2px;
+  background: var(--gold-dark);
+  display:inline-block;
+}
+.on-dark .eyebrow{ color: var(--gold); }
+.on-dark .eyebrow::before{ background: var(--gold); }
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+  font-family: var(--font-head);
+  font-size:.85rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  padding: 15px 28px;
+  border-radius: var(--radius);
+  border: 2px solid transparent;
+  cursor:pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+}
+.btn:hover{ transform: translateY(-2px); }
+.btn-primary{
+  background: var(--gold);
+  color: var(--iron);
+  box-shadow: 0 8px 18px -8px rgba(226,166,57,.7);
+}
+.btn-primary:hover{ background: var(--gold-dark); }
+.btn-outline{
+  background: transparent;
+  border-color: currentColor;
+  color: inherit;
+}
+.on-dark .btn-outline{ color: var(--white); }
+.btn-outline:hover{ background: rgba(255,255,255,.08); }
+.btn-block{ width:100%; justify-content:center; }
+
+/* ==========================================================================
+   Header / nav
+   ========================================================================== */
+.site-header{
+  position:sticky; top:0; z-index:100;
+  background: var(--dusk);
+  border-bottom: 1px solid rgba(231,217,182,.15);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 24px;
+  gap: 16px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--white);
+  letter-spacing:.02em;
+}
+.brand-mark{
+  width:34px; height:34px;
+  flex:none;
+}
+.brand small{
+  display:block;
+  font-family: var(--font-head);
+  font-size:.58rem;
+  letter-spacing:.2em;
+  color: var(--gold);
+  text-transform:uppercase;
+}
+
+.nav-toggle{
+  display:none;
+  background:none; border:none;
+  width:40px; height:40px;
+  position:relative;
+  cursor:pointer;
+}
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after{
+  content:"";
+  position:absolute;
+  left:8px; right:8px;
+  height:2px;
+  background: var(--white);
+  transition: transform .2s ease, opacity .2s ease;
+}
+.nav-toggle span{ top:19px; }
+.nav-toggle span::before{ top:-8px; }
+.nav-toggle span::after{ top:8px; }
+.nav-toggle[aria-expanded="true"] span{ background:transparent; }
+.nav-toggle[aria-expanded="true"] span::before{ transform: translateY(8px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span::after{ transform: translateY(-8px) rotate(-45deg); }
+
+.main-nav{
+  display:flex;
+  align-items:center;
+  gap: 28px;
+}
+.nav-links{
+  display:flex;
+  gap: 26px;
+  font-family: var(--font-head);
+  font-size:.8rem;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.nav-links a{
+  color: rgba(255,251,243,.8);
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+  transition: color .15s ease, border-color .15s ease;
+}
+.nav-links a:hover,
+.nav-links a[aria-current="page"]{
+  color: var(--white);
+  border-color: var(--gold);
+}
+.nav-cta{ display:flex; }
+
+@media (max-width: 880px){
+  .nav-toggle{ display:block; }
+  .main-nav{
+    position:absolute;
+    top:100%; left:0; right:0;
+    background: var(--dusk);
+    flex-direction:column;
+    align-items:stretch;
+    gap:0;
+    padding: 8px 24px 24px;
+    border-bottom:1px solid rgba(231,217,182,.15);
+    display:none;
+  }
+  .main-nav.open{ display:flex; }
+  .nav-links{
+    flex-direction:column;
+    gap:0;
+  }
+  .nav-links a{
+    display:block;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(231,217,182,.1);
+  }
+  .nav-cta{ margin-top:16px; }
+}
+
+/* ==========================================================================
+   Fence-rail divider — signature motif
+   Two horizontal rails + posts, like the arena fence. Used between sections
+   instead of a plain hairline.
+   ========================================================================== */
+.fence-divider{
+  width:100%;
+  height:34px;
+  display:block;
+}
+.fence-divider.on-light{ color: var(--iron); opacity:.35; }
+.fence-divider.on-dark{ color: var(--dust); opacity:.5; }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero{
+  position:relative;
+  background:
+    linear-gradient(180deg, rgba(22,35,58,.55) 0%, rgba(22,35,58,.86) 62%, var(--dusk) 100%),
+    url('https://images.squarespace-cdn.com/content/v1/56b2bbe54c2f858dd7f2e4cb/075bfffc-c112-46f4-ad40-ea93825aabda/BAILEYchangeeventsIMG_6415K.jpg') center 30%/cover no-repeat;
+  color: var(--white);
+  padding: 72px 0 56px;
+}
+.hero-inner{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 48px;
+  align-items:end;
+}
+.hero h1{
+  font-family: var(--font-display);
+  font-weight:400;
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  line-height:1.02;
+  color: var(--white);
+  text-shadow: 0 4px 24px rgba(0,0,0,.35);
+  margin: .3em 0 .35em;
+}
+.hero h1 em{
+  font-style:normal;
+  color: var(--gold);
+}
+.hero-lede{
+  font-size:1.1rem;
+  max-width: 46ch;
+  color: rgba(255,251,243,.88);
+}
+.hero-ctas{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top: 28px;
+}
+
+/* ticket stub card */
+.stub{
+  background: var(--dust-soft);
+  color: var(--iron);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns: 1fr auto;
+}
+.stub::after{
+  content:"";
+  position:absolute;
+  top:0; bottom:0;
+  right: 108px;
+  border-left: 2px dashed rgba(36,29,22,.25);
+}
+.stub-main{ padding: 26px 28px; }
+.stub-main .eyebrow{ margin-bottom:10px; }
+.stub-row{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(36,29,22,.12);
+  font-size:.95rem;
+}
+.stub-row:last-child{ border-bottom:none; }
+.stub-row dt{ color:#5a5142; font-family:var(--font-head); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
+.stub-row dd{ margin:2px 0 0; font-weight:600; text-align:right; }
+.stub-side{
+  width:108px;
+  background: var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-head);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:.8rem;
+  padding: 20px 0;
+}
+
+@media (max-width: 900px){
+  .hero-inner{ grid-template-columns:1fr; }
+  .stub::after{ right:88px; }
+  .stub-side{ width:88px; font-size:.7rem; }
+}
+
+/* ==========================================================================
+   Quick facts strip
+   ========================================================================== */
+.facts{
+  background: var(--dust-soft);
+  border-bottom: 1px solid rgba(36,29,22,.08);
+}
+.facts-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.fact{
+  padding: 28px 22px;
+  border-left: 1px solid rgba(36,29,22,.08);
+}
+.fact:first-child{ border-left:none; }
+.fact-icon{ width:30px; height:30px; margin-bottom:12px; color: var(--gold-dark); }
+.fact h3{ font-size:.95rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:.3em; }
+.fact p{ margin:0; color:#4a4234; font-size:.92rem; }
+
+@media (max-width: 880px){
+  .facts-grid{ grid-template-columns: repeat(2,1fr); }
+  .fact{ border-left:none; border-top:1px solid rgba(36,29,22,.08); }
+  .fact:nth-child(odd){ border-right:1px solid rgba(36,29,22,.08); }
+}
+
+/* ==========================================================================
+   Sections general
+   ========================================================================== */
+.section{ padding: 76px 0; }
+.section-tight{ padding: 56px 0; }
+.section.on-dark{ background: var(--dusk); color: var(--white); }
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:24px;
+  margin-bottom: 40px;
+}
+.section-head h2{
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+}
+.section-head p{ max-width:52ch; color:#4a4234; margin:0; }
+.on-dark .section-head p{ color: rgba(255,251,243,.75); }
+
+/* ==========================================================================
+   Event cards
+   ========================================================================== */
+.card-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+.event-card{
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: 0 10px 24px -16px rgba(22,35,58,.35);
+  display:flex;
+  flex-direction:column;
+}
+.event-card figure{ margin:0; aspect-ratio: 4/3; overflow:hidden; background:var(--dusk); }
+.event-card img{ width:100%; height:100%; object-fit:cover; transition: transform .4s ease; }
+.event-card:hover img{ transform: scale(1.05); }
+.event-card .body{ padding: 20px 22px 24px; flex:1; display:flex; flex-direction:column; }
+.event-card h3{ font-size:1.15rem; margin-bottom:.35em; }
+.event-card p{ color:#4a4234; font-size:.94rem; margin-bottom:0; flex:1; }
+.tag{
+  display:inline-block;
+  font-family: var(--font-head);
+  font-size:.65rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(226,166,57,.18);
+  color: #8a5c14;
+  margin-bottom:10px;
+  width:fit-content;
+}
+.tag.gold{ background: rgba(226,166,57,.18); color:#8a5c14; }
+.tag.sage{ background: rgba(110,123,88,.16); color: var(--sage); }
+
+@media (max-width: 980px){ .card-grid{ grid-template-columns: repeat(2,1fr);} }
+@media (max-width: 640px){ .card-grid{ grid-template-columns: 1fr;} }
+
+/* ==========================================================================
+   Timeline (before/after)
+   ========================================================================== */
+.timeline{
+  display:grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 22px;
+}
+.timeline-item{
+  border-top: 3px solid var(--gold);
+  padding-top: 16px;
+}
+.timeline-item time{
+  display:block;
+  font-family: var(--font-head);
+  font-size:1.3rem;
+  color: var(--gold);
+  margin-bottom:8px;
+}
+.timeline-item h4{ color: var(--white); margin-bottom:.4em; font-size:1.02rem; }
+.timeline-item ul{ font-size:.9rem; color: rgba(255,251,243,.8); }
+.timeline-item li{ padding: 3px 0; }
+.timeline-item li::before{ content:"— "; color: var(--gold); }
+
+@media (max-width: 880px){ .timeline{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 560px){ .timeline{ grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   Callouts / alerts
+   ========================================================================== */
+.callout{
+  border: 1px solid rgba(226,166,57,.5);
+  background: rgba(226,166,57,.1);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  display:flex;
+  gap:14px;
+}
+.callout-icon{ flex:none; width:24px; height:24px; color: #8a5c14; margin-top:2px; }
+.callout h4{ margin:0 0 4px; font-size:1rem; color: #8a5c14; }
+.callout p{ margin:0; font-size:.92rem; color:#4a4234; }
+.callout.gold{ border-color: rgba(226,166,57,.5); background: rgba(226,166,57,.1); }
+.callout.gold h4{ color:#8a5c14; }
+
+/* ==========================================================================
+   Two column layout
+   ========================================================================== */
+.split{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items:start;
+}
+@media (max-width: 880px){ .split{ grid-template-columns:1fr; } }
+
+.info-list{ display:flex; flex-direction:column; gap:18px; }
+.info-list .row{ display:flex; gap:16px; }
+.info-list .row .icon{ flex:none; width:26px; height:26px; color:var(--gold-dark); margin-top:2px; }
+.info-list h4{ margin:0 0 3px; font-size:1rem; }
+.info-list p{ margin:0; color:#4a4234; font-size:.93rem; }
+.on-dark .info-list p{ color: rgba(255,251,243,.78); }
+.on-dark .info-list .icon{ color: var(--gold); }
+
+/* map frame */
+.map-frame{
+  border-radius: var(--radius);
+  overflow:hidden;
+  border: 1px solid rgba(36,29,22,.12);
+  box-shadow: var(--shadow);
+}
+.map-frame iframe{ width:100%; height:340px; border:0; display:block; }
+
+/* ==========================================================================
+   Sponsor tiers
+   ========================================================================== */
+.tier-table{ width:100%; border-collapse:collapse; font-size:.92rem; }
+.tier-table th,.tier-table td{ text-align:left; padding: 14px 16px; border-bottom:1px solid rgba(36,29,22,.1); vertical-align:top; }
+.tier-table th{ font-family:var(--font-head); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:#5a5142; }
+.claimed{
+  display:inline-block;
+  font-family: var(--font-head);
+  font-size:.62rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color: var(--sage);
+  border: 1px solid var(--sage);
+  border-radius:999px;
+  padding: 3px 9px;
+}
+@media (max-width: 720px){
+  .tier-table thead{ display:none; }
+  .tier-table, .tier-table tbody, .tier-table tr, .tier-table td{ display:block; width:100%; }
+  .tier-table tr{ padding: 14px 0; border-bottom:1px solid rgba(36,29,22,.12); }
+  .tier-table td{ border:none; padding: 3px 0; }
+  .tier-table td::before{ content: attr(data-label); display:block; font-family:var(--font-head); font-size:.65rem; letter-spacing:.06em; text-transform:uppercase; color:#8a5c14; }
+}
+
+/* ==========================================================================
+   Page hero (interior pages)
+   ========================================================================== */
+.page-hero{
+  background: linear-gradient(180deg, rgba(22,35,58,.78), var(--dusk)), var(--dusk);
+  background-size:cover;
+  color: var(--white);
+  padding: 56px 0 44px;
+}
+.page-hero.has-image{
+  background-blend-mode: normal;
+}
+.page-hero h1{ font-family: var(--font-display); font-weight:400; font-size: clamp(2.2rem,5vw,3.4rem); margin:.25em 0 0; color: var(--white); }
+.page-hero p{ max-width:60ch; color: rgba(255,251,243,.8); margin-top:10px; }
+.breadcrumb{ font-size:.78rem; letter-spacing:.05em; text-transform:uppercase; color: rgba(255,251,243,.55); font-family: var(--font-head); }
+.breadcrumb a{ color: var(--gold); }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer{
+  background: var(--dusk);
+  color: rgba(255,251,243,.75);
+  padding: 56px 0 28px;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  gap: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(231,217,182,.15);
+}
+.footer-grid h4{
+  color: var(--gold);
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom: 14px;
+}
+.footer-grid ul{ display:flex; flex-direction:column; gap:9px; font-size:.9rem; }
+.footer-grid a:hover{ color: var(--white); }
+.footer-brand{ font-family: var(--font-display); font-size:1.6rem; color: var(--white); margin-bottom:10px; }
+.footer-bottom{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  padding-top: 22px;
+  font-size:.8rem;
+  color: rgba(255,251,243,.5);
+}
+@media (max-width: 880px){
+  .footer-grid{ grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px){
+  .footer-grid{ grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   Sponsor ticker — continuous marquee of this season's sponsors
+   ========================================================================== */
+.sponsor-ticker{
+  background: var(--iron);
+  border-bottom: 1px solid rgba(231,217,182,.14);
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+.sponsor-ticker::before,
+.sponsor-ticker::after{
+  content:"";
+  position:absolute; top:0; bottom:0;
+  width:56px; z-index:2; pointer-events:none;
+}
+.sponsor-ticker::before{ left:0; background: linear-gradient(90deg, var(--iron), transparent); }
+.sponsor-ticker::after{ right:0; background: linear-gradient(270deg, var(--iron), transparent); }
+.sponsor-ticker-track{
+  display:inline-flex;
+  align-items:center;
+  width: max-content;
+  padding: 9px 0;
+  animation: sponsor-ticker-scroll 220s linear infinite;
+}
+.sponsor-ticker:hover .sponsor-ticker-track,
+.sponsor-ticker:focus-within .sponsor-ticker-track{
+  animation-play-state: paused;
+}
+@keyframes sponsor-ticker-scroll{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-50%); }
+}
+.sponsor-ticker .tier{
+  font-family: var(--font-head);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-right: 8px;
+  flex: none;
+}
+.sponsor-ticker .name{
+  font-size: .82rem;
+  color: rgba(255,251,243,.82);
+  margin-right: 22px;
+  flex: none;
+}
+.sponsor-ticker .sep{
+  color: var(--gold);
+  margin-right: 22px;
+  flex: none;
+}
+@media (prefers-reduced-motion: reduce){
+  .sponsor-ticker{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sponsor-ticker-track{ animation: none; }
+}
+
+/* ==========================================================================
+   Misc utility
+   ========================================================================== */
+.center{ text-align:center; }
+.mt-lg{ margin-top:40px; }
+.stack{ display:flex; flex-direction:column; gap:16px; }
+.pill-row{ display:flex; gap:10px; flex-wrap:wrap; }
+.skip-link{
+  position:absolute; left:-999px; top:0;
+  background: var(--gold); color:var(--iron); padding:10px 16px; z-index:200;
+}
+.skip-link:focus{ left:12px; top:12px; }
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 6C12 6 9 10 9 18C9 26 14 32 20 32C26 32 31 26 31 18C31 10 28 6 28 6" stroke="#E2A639" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="12" cy="7" r="2" fill="#E2A639"/>
+        <circle cx="28" cy="7" r="2" fill="#E2A639"/>
+      </svg>
+      <span>Snowmass Rodeo<small>Snowmass Village, Colorado</small></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu"><span></span></button>
+    <nav class="main-nav" id="main-nav">
+      <ul class="nav-links">
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="visit.html">Visit</a></li>
+        <li><a href="contestants.html">Contestants</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="sponsors.html">Sponsors</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a class="btn btn-primary" href="https://www.eventbrite.com/e/snowmass-village-rodeo-2026-we-will-not-accept-3rd-party-resold-tickets-tickets-1984187844255?aff=oddtdtcreator" target="_blank" rel="noopener">Get Tickets</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="sponsor-ticker" role="region" aria-label="2026 Snowmass Rodeo sponsors">
+  <div class="sponsor-ticker-track"><span class="name">One Generous Donor</span><span class="sep">&#9670;</span><span class="name">Alex &amp; Cannell Dillard</span><span class="sep">&#9670;</span><span class="name">Aspen One</span><span class="sep">&#9670;</span><span class="name">Bumble</span><span class="sep">&#9670;</span><span class="name">Ressler Gertz Family Foundation</span><span class="sep">&#9670;</span><span class="name">Snowmass Tourism</span><span class="sep">&#9670;</span><span class="name">WaterOuai</span><span class="sep">&#9670;</span><span class="name">Ackerman Distributing</span><span class="sep">&#9670;</span><span class="name">Aspen Snowmass Sotheby&#x27;s Intl. Realty</span><span class="sep">&#9670;</span><span class="name">BJ Adams – Compass</span><span class="sep">&#9670;</span><span class="name">Butcher&#x27;s Block</span><span class="sep">&#9670;</span><span class="name">CINCH</span><span class="sep">&#9670;</span><span class="name">Eagle Rise</span><span class="sep">&#9670;</span><span class="name">Generous Donor</span><span class="sep">&#9670;</span><span class="name">Howry Breen &amp; Herman, LLP</span><span class="sep">&#9670;</span><span class="name">Jaspar and Gabriela Weir</span><span class="sep">&#9670;</span><span class="name">JUSTIN Brands, Inc.</span><span class="sep">&#9670;</span><span class="name">Snowmass Mountain Club</span><span class="sep">&#9670;</span><span class="name">Stoney Creek Ranch – Karen Davidson</span><span class="sep">&#9670;</span><span class="name">STRATOS</span><span class="sep">&#9670;</span><span class="name">The Kodiak Club</span><span class="sep">&#9670;</span><span class="name">Alpine Bank</span><span class="sep">&#9670;</span><span class="name">VICEROY Snowmass</span><span class="sep">&#9670;</span><span class="name">AERO</span><span class="sep">&#9670;</span><span class="name">Acrisure Mortgage / Greenberg Traurig</span><span class="sep">&#9670;</span><span class="name">Alpine Art Logistics, LLC</span><span class="sep">&#9670;</span><span class="name">American Hat Company</span><span class="sep">&#9670;</span><span class="name">Aspen Dirtbike School</span><span class="sep">&#9670;</span><span class="name">Aspen Waterwise</span><span class="sep">&#9670;</span><span class="name">Blazing Adventures</span><span class="sep">&#9670;</span><span class="name">Cathers Home</span><span class="sep">&#9670;</span><span class="name">Collins Paint</span><span class="sep">&#9670;</span><span class="name">Compass School of Dallas</span><span class="sep">&#9670;</span><span class="name">Debbie Newell – American Commercial Realty Corp.</span><span class="sep">&#9670;</span><span class="name">Eastwood Snowmass Investors, LP</span><span class="sep">&#9670;</span><span class="name">Elk Mountain Technology</span><span class="sep">&#9670;</span><span class="name">F&amp;M Architects, LLC</span><span class="sep">&#9670;</span><span class="name">George T Sanders</span><span class="sep">&#9670;</span><span class="name">Holy Cross Energy</span><span class="sep">&#9670;</span><span class="name">iTrip</span><span class="sep">&#9670;</span><span class="name">JVAM</span><span class="sep">&#9670;</span><span class="name">Lassiter Electric</span><span class="sep">&#9670;</span><span class="name">Littell Electric Inc.</span><span class="sep">&#9670;</span><span class="name">Lori Guilander</span><span class="sep">&#9670;</span><span class="name">LUMA Aesthetics</span><span class="sep">&#9670;</span><span class="name">LUX Aspen Ltd.</span><span class="sep">&#9670;</span><span class="name">Melissa and Logan Moncrief Family Foundation</span><span class="sep">&#9670;</span><span class="name">Moose Motorworks</span><span class="sep">&#9670;</span><span class="name">Mountain Beverage Company</span><span class="sep">&#9670;</span><span class="name">Obermeyer Wealth Partners</span><span class="sep">&#9670;</span><span class="name">Romero Group Realty, LLC</span><span class="sep">&#9670;</span><span class="name">Rotary Club of Snowmass Village</span><span class="sep">&#9670;</span><span class="name">Sandy Stay</span><span class="sep">&#9670;</span><span class="name">SH Built</span><span class="sep">&#9670;</span><span class="name">Snowmass Chapel</span><span class="sep">&#9670;</span><span class="name">Snowmass Club</span><span class="sep">&#9670;</span><span class="name">Snowmass Lawn and Plant</span><span class="sep">&#9670;</span><span class="name">Stacey Kelly – Christies International Real Estate</span><span class="sep">&#9670;</span><span class="name">Sundance Liquor &amp; Gifts</span><span class="sep">&#9670;</span><span class="name">TE Builders</span><span class="sep">&#9670;</span><span class="name">The Agency Aspen</span><span class="sep">&#9670;</span><span class="name">VERTEX Security</span><span class="sep">&#9670;</span><span class="name">Wild Wild West Development</span><span class="sep">&#9670;</span><span class="name">Aspen Daily News</span><span class="sep">&#9670;</span><span class="name">Aspen Times / Snowmass Sun</span><span class="sep">&#9670;</span><span class="name">One Generous Donor</span><span class="sep">&#9670;</span><span class="name">Alex &amp; Cannell Dillard</span><span class="sep">&#9670;</span><span class="name">Aspen One</span><span class="sep">&#9670;</span><span class="name">Bumble</span><span class="sep">&#9670;</span><span class="name">Ressler Gertz Family Foundation</span><span class="sep">&#9670;</span><span class="name">Snowmass Tourism</span><span class="sep">&#9670;</span><span class="name">WaterOuai</span><span class="sep">&#9670;</span><span class="name">Ackerman Distributing</span><span class="sep">&#9670;</span><span class="name">Aspen Snowmass Sotheby&#x27;s Intl. Realty</span><span class="sep">&#9670;</span><span class="name">BJ Adams – Compass</span><span class="sep">&#9670;</span><span class="name">Butcher&#x27;s Block</span><span class="sep">&#9670;</span><span class="name">CINCH</span><span class="sep">&#9670;</span><span class="name">Eagle Rise</span><span class="sep">&#9670;</span><span class="name">Generous Donor</span><span class="sep">&#9670;</span><span class="name">Howry Breen &amp; Herman, LLP</span><span class="sep">&#9670;</span><span class="name">Jaspar and Gabriela Weir</span><span class="sep">&#9670;</span><span class="name">JUSTIN Brands, Inc.</span><span class="sep">&#9670;</span><span class="name">Snowmass Mountain Club</span><span class="sep">&#9670;</span><span class="name">Stoney Creek Ranch – Karen Davidson</span><span class="sep">&#9670;</span><span class="name">STRATOS</span><span class="sep">&#9670;</span><span class="name">The Kodiak Club</span><span class="sep">&#9670;</span><span class="name">Alpine Bank</span><span class="sep">&#9670;</span><span class="name">VICEROY Snowmass</span><span class="sep">&#9670;</span><span class="name">AERO</span><span class="sep">&#9670;</span><span class="name">Acrisure Mortgage / Greenberg Traurig</span><span class="sep">&#9670;</span><span class="name">Alpine Art Logistics, LLC</span><span class="sep">&#9670;</span><span class="name">American Hat Company</span><span class="sep">&#9670;</span><span class="name">Aspen Dirtbike School</span><span class="sep">&#9670;</span><span class="name">Aspen Waterwise</span><span class="sep">&#9670;</span><span class="name">Blazing Adventures</span><span class="sep">&#9670;</span><span class="name">Cathers Home</span><span class="sep">&#9670;</span><span class="name">Collins Paint</span><span class="sep">&#9670;</span><span class="name">Compass School of Dallas</span><span class="sep">&#9670;</span><span class="name">Debbie Newell – American Commercial Realty Corp.</span><span class="sep">&#9670;</span><span class="name">Eastwood Snowmass Investors, LP</span><span class="sep">&#9670;</span><span class="name">Elk Mountain Technology</span><span class="sep">&#9670;</span><span class="name">F&amp;M Architects, LLC</span><span class="sep">&#9670;</span><span class="name">George T Sanders</span><span class="sep">&#9670;</span><span class="name">Holy Cross Energy</span><span class="sep">&#9670;</span><span class="name">iTrip</span><span class="sep">&#9670;</span><span class="name">JVAM</span><span class="sep">&#9670;</span><span class="name">Lassiter Electric</span><span class="sep">&#9670;</span><span class="name">Littell Electric Inc.</span><span class="sep">&#9670;</span><span class="name">Lori Guilander</span><span class="sep">&#9670;</span><span class="name">LUMA Aesthetics</span><span class="sep">&#9670;</span><span class="name">LUX Aspen Ltd.</span><span class="sep">&#9670;</span><span class="name">Melissa and Logan Moncrief Family Foundation</span><span class="sep">&#9670;</span><span class="name">Moose Motorworks</span><span class="sep">&#9670;</span><span class="name">Mountain Beverage Company</span><span class="sep">&#9670;</span><span class="name">Obermeyer Wealth Partners</span><span class="sep">&#9670;</span><span class="name">Romero Group Realty, LLC</span><span class="sep">&#9670;</span><span class="name">Rotary Club of Snowmass Village</span><span class="sep">&#9670;</span><span class="name">Sandy Stay</span><span class="sep">&#9670;</span><span class="name">SH Built</span><span class="sep">&#9670;</span><span class="name">Snowmass Chapel</span><span class="sep">&#9670;</span><span class="name">Snowmass Club</span><span class="sep">&#9670;</span><span class="name">Snowmass Lawn and Plant</span><span class="sep">&#9670;</span><span class="name">Stacey Kelly – Christies International Real Estate</span><span class="sep">&#9670;</span><span class="name">Sundance Liquor &amp; Gifts</span><span class="sep">&#9670;</span><span class="name">TE Builders</span><span class="sep">&#9670;</span><span class="name">The Agency Aspen</span><span class="sep">&#9670;</span><span class="name">VERTEX Security</span><span class="sep">&#9670;</span><span class="name">Wild Wild West Development</span><span class="sep">&#9670;</span><span class="name">Aspen Daily News</span><span class="sep">&#9670;</span><span class="name">Aspen Times / Snowmass Sun</span><span class="sep">&#9670;</span></div>
+</div>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <p class="eyebrow on-dark">52nd Season · A Community Tradition Since 1975</p>
+        <h1>Snowmass Village's community rodeo, <em>every Wednesday all summer.</em></h1>
+        <p class="hero-lede">Bull riding, barrel racing, and a chuckwagon BBQ under the Elk Range — brought to you by neighbors, local ranch families, and volunteers. Every ticket helps fund scholarships for our next generation of rodeo athletes.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="https://www.eventbrite.com/e/snowmass-village-rodeo-2026-we-will-not-accept-3rd-party-resold-tickets-tickets-1984187844255?aff=oddtdtcreator" target="_blank" rel="noopener">Get Tickets</a>
+          <a class="btn btn-outline" href="events.html">See Tonight's Events</a>
+        </div>
+      </div>
+
+      <div class="stub" role="group" aria-label="Rodeo schedule">
+        <div class="stub-main">
+          <p class="eyebrow">Admit One · Rain or Shine</p>
+          <dl>
+            <div class="stub-row"><dt>Season</dt><dd>Jun 17 – Aug 19, 2026</dd></div>
+            <div class="stub-row"><dt>Every</dt><dd>Wednesday Night</dd></div>
+            <div class="stub-row"><dt>Gates &amp; BBQ</dt><dd>5:00 PM</dd></div>
+            <div class="stub-row"><dt>Rodeo</dt><dd>7:00 – 8:30 PM</dd></div>
+            <div class="stub-row"><dt>Tickets</dt><dd>Eventbrite only</dd></div>
+          </dl>
+        </div>
+        <div class="stub-side">Snowmass&nbsp;Village</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK FACTS -->
+  <section class="facts">
+    <div class="container facts-grid">
+      <div class="fact">
+        <svg class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        <h3>When</h3>
+        <p>Every Wednesday, June 17 – August 19, 2026. Rain or shine — the rodeo does not cancel for weather.</p>
+      </div>
+      <div class="fact">
+        <svg class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <h3>Where</h3>
+        <p>2735 Brush Creek Road, Snowmass Village. About 15 minutes from downtown Aspen.</p>
+      </div>
+      <div class="fact">
+        <svg class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a1.5 1.5 0 0 0 0 3V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a1.5 1.5 0 0 0 0-3V9Z"/><path d="M10 7v10" stroke-dasharray="2 3"/></svg>
+        <h3>Tickets</h3>
+        <p>Sold only through Eventbrite — no third‑party resellers. Children two and under are free.</p>
+      </div>
+      <div class="fact">
+        <svg class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M2 20c0-3 2.7-5 6-5s6 2 6 5M14 20c0-2.2 1.8-4 4.5-4S23 17.8 23 20"/></svg>
+        <h3>Capacity</h3>
+        <p>We cap at 2,000 guests and sell out most weeks. Pre‑purchase to guarantee entry — sorry, no refunds.</p>
+      </div>
+    </div>
+  </section>
+
+  <svg class="fence-divider on-light" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="9" x2="1200" y2="9" stroke="currentColor" stroke-width="2"/><line x1="0" y1="23" x2="1200" y2="23" stroke="currentColor" stroke-width="2"/><line x1="20" y1="2" x2="20" y2="32" stroke="currentColor" stroke-width="2"/><line x1="140" y1="2" x2="140" y2="32" stroke="currentColor" stroke-width="2"/><line x1="260" y1="2" x2="260" y2="32" stroke="currentColor" stroke-width="2"/><line x1="380" y1="2" x2="380" y2="32" stroke="currentColor" stroke-width="2"/><line x1="500" y1="2" x2="500" y2="32" stroke="currentColor" stroke-width="2"/><line x1="620" y1="2" x2="620" y2="32" stroke="currentColor" stroke-width="2"/><line x1="740" y1="2" x2="740" y2="32" stroke="currentColor" stroke-width="2"/><line x1="860" y1="2" x2="860" y2="32" stroke="currentColor" stroke-width="2"/><line x1="980" y1="2" x2="980" y2="32" stroke="currentColor" stroke-width="2"/><line x1="1100" y1="2" x2="1100" y2="32" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- EVENTS PREVIEW -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">In The Arena</p>
+          <h2>Eight events, one wild Wednesday.</h2>
+        </div>
+        <p>From bareback riding to breakaway roping, plus the kids' Calf Scramble and Mutton Bustin' before the lights go up.</p>
+      </div>
+
+      <div class="card-grid">
+        <article class="event-card">
+          <figure><img src="https://images.squarespace-cdn.com/content/v1/56b2bbe54c2f858dd7f2e4cb/d516c1bd-bd18-41bb-87d4-64e488e4541d/bull.jpeg" alt="Cowboy competing in bull riding at the Snowmass Rodeo" loading="lazy"></figure>
+          <div class="body">
+            <span class="tag">Most Dangerous</span>
+            <h3>Bull Riding</h3>
+            <p>Eight seconds on 2,000+ pounds of bull, one hand free, nothing to hold but a braided rope.</p>
+          </div>
+        </article>
+        <article class="event-card">
+          <figure><img src="https://images.squarespace-cdn.com/content/v1/56b2bbe54c2f858dd7f2e4cb/261a9a6b-5ced-47ae-b6a6-eab1465dffa3/barrells.jpg" alt="Barrel racer rounding a barrel at speed" loading="lazy"></figure>
+          <div class="body">
+            <span class="tag gold">Fan Favorite</span>
+            <h3>Barrel Racing</h3>
+            <p>One horse, one rider, three barrels in a cloverleaf — timed to the hundredth of a second.</p>
+          </div>
+        </article>
+        <article class="event-card">
+          <figure><img src="https://images.squarespace-cdn.com/content/v1/56b2bbe54c2f858dd7f2e4cb/0ff3742e-bbb4-4167-b9de-085d67bfdc7e/bareback.jpg" alt="Bareback rider in the arena" loading="lazy"></figure>
+          <div class="body">
+            <span class="tag sage">Classic Event</span>
+            <h3>Bareback Riding</h3>
+            <p>No saddle, no reins — just a suitcase‑style handle and eight seconds of balance.</p>
+          </div>
+        </article>
+      </div>
+
+      <p class="mt-lg center"><a class="btn btn-outline" href="events.html" style="color:var(--iron)">See All 8 Events &amp; Kids' Events →</a></p>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER TIMELINE -->
+  <section class="section on-dark">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow on-dark">The Full Evening</p>
+          <h2>Come at 5, stay past 8:30.</h2>
+        </div>
+        <p>The rodeo grounds open two hours before the action starts, with plenty to do before and after.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <time>5:00 PM</time>
+          <h4>Gates Open</h4>
+          <ul>
+            <li>Free petting zoo</li>
+            <li>Mechanical bull</li>
+            <li>Western vendor shopping</li>
+            <li>Saloon &amp; Cowboy Dinner BBQ</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <time>5:30 PM</time>
+          <h4>Kids' Sign‑Ups</h4>
+          <ul>
+            <li>Calf Scramble entries</li>
+            <li>Mutton Bustin' entries</li>
+            <li>Sign‑up closes at 7pm</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <time>7:00 PM</time>
+          <h4>Grand Entry</h4>
+          <ul>
+            <li>Flag tribute &amp; anthem</li>
+            <li>All 8 rodeo events</li>
+            <li>Runs about 90 minutes</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <time>8:30 PM</time>
+          <h4>After the Rodeo</h4>
+          <ul>
+            <li>Vendors stay open</li>
+            <li>Western clothing &amp; jewelry</li>
+            <li>Free shuttles to parking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <svg class="fence-divider on-light" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="9" x2="1200" y2="9" stroke="currentColor" stroke-width="2"/><line x1="0" y1="23" x2="1200" y2="23" stroke="currentColor" stroke-width="2"/><line x1="20" y1="2" x2="20" y2="32" stroke="currentColor" stroke-width="2"/><line x1="140" y1="2" x2="140" y2="32" stroke="currentColor" stroke-width="2"/><line x1="260" y1="2" x2="260" y2="32" stroke="currentColor" stroke-width="2"/><line x1="380" y1="2" x2="380" y2="32" stroke="currentColor" stroke-width="2"/><line x1="500" y1="2" x2="500" y2="32" stroke="currentColor" stroke-width="2"/><line x1="620" y1="2" x2="620" y2="32" stroke="currentColor" stroke-width="2"/><line x1="740" y1="2" x2="740" y2="32" stroke="currentColor" stroke-width="2"/><line x1="860" y1="2" x2="860" y2="32" stroke="currentColor" stroke-width="2"/><line x1="980" y1="2" x2="980" y2="32" stroke="currentColor" stroke-width="2"/><line x1="1100" y1="2" x2="1100" y2="32" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- GETTING THERE PREVIEW -->
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Plan The Drive</p>
+        <h2>Getting to the grounds.</h2>
+        <p>Brush Creek Road, off Highway 82, about 15 minutes from Aspen. Parking is limited, so most guests ride the free shuttle in.</p>
+        <div class="callout mt-lg">
+          <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 2.5 18a1.6 1.6 0 0 0 1.4 2.4h16.2a1.6 1.6 0 0 0 1.4-2.4L13.7 3.9a1.6 1.6 0 0 0-2.8 0Z"/></svg>
+          <div>
+            <h4>No roadside parking</h4>
+            <p>Roadway shoulders are off‑limits at any time. Use the Park &amp; Ride or the free shuttle loop — details on the Visit page.</p>
+          </div>
+        </div>
+        <p class="mt-lg"><a class="btn btn-primary" href="visit.html">Directions &amp; Parking →</a></p>
+      </div>
+      <div class="map-frame">
+        <iframe title="Map to Snowmass Rodeo Grounds" loading="lazy" src="https://www.google.com/maps?q=2735+Brush+Creek+Road,+Snowmass+Village,+CO+81615&output=embed"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPONSOR STRIP -->
+  <section class="section-tight on-dark" style="background:var(--iron)">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div>
+        <p class="eyebrow on-dark">Snowmass Western Heritage Association</p>
+        <h2 style="margin-bottom:0;font-size:1.6rem">Every ticket and sponsorship funds rodeo scholarships.</h2>
+      </div>
+      <a class="btn btn-primary" href="sponsors.html">See Sponsorship Info</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Snowmass Rodeo</div>
+        <p>Produced by the Snowmass Western Heritage Association, a 501(c)(3) nonprofit, since 1975. This is our 52nd season.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="events.html">Rodeo Events</a></li>
+          <li><a href="events.html#kids">Kids' Events</a></li>
+          <li><a href="visit.html">Directions &amp; Parking</a></li>
+          <li><a href="contestants.html">Contestants</a></li>
+          <li><a href="scholarships.html">Scholarships</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="sponsors.html">Sponsorship</a></li>
+          <li><a href="https://www.snowmassrodeo.org/info/volunteers" target="_blank" rel="noopener">Volunteer</a></li>
+          <li><a href="https://www.snowmassrodeo.org/2026-scholarship-application-1" target="_blank" rel="noopener">Apply for a Scholarship</a></li>
+          <li><a href="https://www.snowmassrodeo.org/swha-snowmass-western-heritage-association" target="_blank" rel="noopener">About SWHA</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li>2735 Brush Creek Road</li>
+          <li>Snowmass Village, CO 81615</li>
+          <li><a href="mailto:sponsorsnowmassrodeo@gmail.com">sponsorsnowmassrodeo@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> Snowmass Rodeo / SWHA. All rights reserved.</span>
+      <span>Rodeo action runs rain or shine.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.querySelector('.main-nav');
+
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      var expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('open');
+    });
+
+    // Close menu when a link is tapped (mobile)
+    nav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  var yearEl = document.querySelector('[data-year]');
+  if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+});
+
+</script>
+</body>
+</html>
